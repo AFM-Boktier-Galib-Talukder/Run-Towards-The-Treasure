@@ -12,7 +12,7 @@ X =  (Male / Female) <br><br>
 For Male, I = Fotua & Lungi , O = Shirt & Pant , P = Panjabi & Payjama <br>
 For Female, I = Sari , O = Gown , P = Princess dress <br><br>
 <b> Camera control : </b><br>
-J =  (TPP / FPP) <br>   
+J =  (TPP / FPP) <br>
 H = upper view, N = lower view, M = Right Rotation, B = Left Rotation <br><br>
 <b> Game Mechanisms : </b> <br>
 Player moves forward + camera follows the player <br>
