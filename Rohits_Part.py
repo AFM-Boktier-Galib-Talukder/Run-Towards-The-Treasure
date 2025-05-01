@@ -49,8 +49,6 @@ def update_rohit_features():
 
 def handle_rohit_keys(key):
     global paused, game_over, cheat_mode, score, treasures, player_pos, treasure_spawn_timer
-    if key == b'p':
-        paused = not paused
     if key == b'r':
         score = 0
         paused = False
@@ -65,18 +63,23 @@ def handle_rohit_keys(key):
 
 
 def draw_rohit_text():
-    if not Player_running:
-        draw_text(350, 740, f"Press Space Bar to Play The Game")
-    else:
-        draw_text(370, 740, f"Press Space Bar to Pause")
-        draw_text(800, 770, f"Score: {score}")
-    if paused:
-        draw_text(400, 400, "PAUSED")
+    draw_text(800, 770, f"Score: {score}")
+    draw_text(700, 620, f"Press '<' key to shift left")
+    draw_text(700, 640, f"Press '>' key to shift right")
     if game_over:
-        draw_text(350, 380, "GAME OVER - Press 'R' to Restart")
+        draw_text(800, 740, "GAME OVER")
     if cheat_mode:
         draw_text(800, 740, "Cheat Mode ON")
-        draw_text(30, 570, "Controls: P = Pause | R = Restart | C = Cheat | Space = Start")
+
+
+def handle_lane_change(key):
+    global player_pos
+    # if key == b'n':
+    #     if player_pos[0] > -500:
+    #         player_pos[0] -= 500  # Move left
+    # if key == b'v':
+    #     if player_pos[0] < 500:
+    #         player_pos[0] += 500  # Move right
 
 
 def specialKeyListener(key, x, y):

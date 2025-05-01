@@ -31,6 +31,92 @@ obstacle_size = 600
 
 #.................................................
 
+# ---------- START: ROHIT'S PART (MY FEATURES) ----------
+score = 0
+paused = False
+game_over = False
+cheat_mode = False
+treasures = [(0, -3000, 0)]  # initial treasure to avoid empty list crash
+treasure_spawn_timer = 0
+
+
+def draw_treasures():
+    glColor3f(1, 1, 0)
+    for (x, y, z) in treasures:
+        glPushMatrix()
+        glTranslatef(x, y, z)
+        gluSphere(gluNewQuadric(), 50, 10, 10)
+        glPopMatrix()
+
+
+def update_rohit_features():
+    global score, game_over, treasures, treasure_spawn_timer
+
+    if not Player_running or paused or game_over:
+        return
+
+    if not obstacles:
+        return  # Avoid crash if obstacles are not yet generated
+
+    px, py, _ = player_pos
+
+    for obs in obstacles:
+        ox, oy, _ = obs['position']
+        if abs(px - ox) < 300 and abs(py - oy) < 300 and not cheat_mode:
+            game_over = True
+            return
+
+    new_treasures = []
+    for (tx, ty, tz) in treasures:
+        if abs(px - tx) < 300 and abs(py - ty) < 300:
+            score += 100
+        else:
+            new_treasures.append((tx, ty, tz))
+    treasures[:] = new_treasures
+
+    treasure_spawn_timer += 1
+    if treasure_spawn_timer >= 200:
+        treasures.append((random.choice([-500, 0, 500]), py - 3000, 0))
+        treasure_spawn_timer = 0
+
+
+def handle_rohit_keys(key):
+    global paused, game_over, cheat_mode, score, treasures, player_pos, treasure_spawn_timer
+    if key == b'r':
+        score = 0
+        paused = False
+        game_over = False
+        treasure_spawn_timer = 0
+        treasures.clear()
+        treasures.append((0, -3000, 0))
+        generate_obstacles()
+        player_pos[:] = [0, 0, 0]
+    if key == b'c':
+        cheat_mode = not cheat_mode
+
+
+def draw_rohit_text():
+    draw_text(800, 770, f"Score: {score}")
+    draw_text(700, 620, f"Press '<' key to shift left")
+    draw_text(700, 640, f"Press '>' key to shift right")
+    if game_over:
+        draw_text(800, 740, "GAME OVER")
+    if cheat_mode:
+        draw_text(800, 740, "Cheat Mode ON")
+
+
+def handle_lane_change(key):
+    global player_pos
+    # if key == b'n':
+    #     if player_pos[0] > -500:
+    #         player_pos[0] -= 500  # Move left
+    # if key == b'v':
+    #     if player_pos[0] < 500:
+    #         player_pos[0] += 500  # Move right
+
+# ---------- END: ROHIT'S PART ----------
+
+
 def draw_text(x, y, text, font=GLUT_BITMAP_HELVETICA_18):
     glColor3f(1,1,1)
     glMatrixMode(GL_PROJECTION)
@@ -361,7 +447,22 @@ def draw_player():
 
 
 
+def specialKeyListener(key, x, y):
+    global player_pos
+    if key == GLUT_KEY_RIGHT:
+        if player_pos[0] > -500:
+            player_pos[0] -= 500  
+    elif key == GLUT_KEY_LEFT:
+        if player_pos[0] < 500:
+            player_pos[0] += 500
+
+
 def keyboardListener(key, x, y):
+    
+    handle_rohit_keys(key)
+    handle_lane_change(key)
+
+
     global Player_running, Male, I, O, P, camera_pos, camera_angle, camera_distance, fpp_mode, tpp_camera_pos, player_pos, player_rotation,D
                 
     if key == b' ':
@@ -453,9 +554,10 @@ def setupCamera():
     else:
         
         x, y, z = camera_pos
-        gluLookAt(x, y, z, 
-                 px, py, pz + 200,  
-                 0, 0, 1)
+        gluLookAt(x, y, z,
+          0, py, pz + 200,   # ← Fix X to 0, so camera doesn't follow left/right
+          0, 0, 1)
+
 
 def game_floor():
     glBegin(GL_QUADS)
@@ -519,6 +621,10 @@ def idle():
     - Updates player and camera positions when running
     - Triggers screen redraw for real-time updates.
     """
+
+    update_rohit_features()  # Rohit's scoring, collision, treasure logic
+
+
     global player_pos, camera_pos, tpp_camera_pos
     
     if Player_running:
@@ -537,6 +643,11 @@ def idle():
             camera_pos = (cam_x - dx, cam_y - dy, cam_z)
             tpp_camera_pos = (tpp_camera_pos[0] - dx, tpp_camera_pos[1] - dy, tpp_camera_pos[2])
     
+        if game_over: 
+            # draw_text(800, 740, "GAME OVER")
+            return
+
+
     glutPostRedisplay()
 
 
@@ -571,6 +682,10 @@ def showScreen():
 
     else:
         draw_text(370, 740, f"Press Space Bar to Pause")
+
+    draw_treasures()       # Rohit's treasures
+    draw_rohit_text()      # Rohit's score, pause, game over
+
 
     draw_player()
 
