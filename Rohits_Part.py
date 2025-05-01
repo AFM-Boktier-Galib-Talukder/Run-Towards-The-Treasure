@@ -69,24 +69,26 @@ def draw_rohit_text():
         draw_text(350, 740, f"Press Space Bar to Play The Game")
     else:
         draw_text(370, 740, f"Press Space Bar to Pause")
-    draw_text(800, 770, f"Score: {score}")
+        draw_text(800, 770, f"Score: {score}")
     if paused:
         draw_text(400, 400, "PAUSED")
     if game_over:
         draw_text(350, 380, "GAME OVER - Press 'R' to Restart")
     if cheat_mode:
         draw_text(800, 740, "Cheat Mode ON")
-    draw_text(30, 570, "Controls: P = Pause | R = Restart | C = Cheat | Space = Start")
+        draw_text(30, 570, "Controls: P = Pause | R = Restart | C = Cheat | Space = Start")
 
 
-def handle_lane_change(key):
+def specialKeyListener(key, x, y):
     global player_pos
-    if key == b'n':
+    # ---------- FEATURE 04: Lane Changing (arrow keys only) ----------
+    # This version only updates player X position, does NOT touch camera
+    if key == GLUT_KEY_RIGHT:
         if player_pos[0] > -500:
-            player_pos[0] -= 500  # Move left
-    if key == b'v':
+            player_pos[0] -= 500  # Move left one lane
+    elif key == GLUT_KEY_LEFT:
         if player_pos[0] < 500:
-            player_pos[0] += 500  # Move right
+            player_pos[0] += 500  # Move right one lane
 
-            
+
 # ---------- END: ROHIT'S PART ----------

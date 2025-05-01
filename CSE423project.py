@@ -589,7 +589,7 @@ def main():
 
     glutDisplayFunc(showScreen)  
     glutKeyboardFunc(keyboardListener)  
-    #glutSpecialFunc(specialKeyListener)
+    glutSpecialFunc(specialKeyListener)
     #glutMouseFunc(mouseListener)
     glutIdleFunc(idle)  
 
