@@ -77,4 +77,16 @@ def draw_rohit_text():
     if cheat_mode:
         draw_text(800, 740, "Cheat Mode ON")
     draw_text(30, 570, "Controls: P = Pause | R = Restart | C = Cheat | Space = Start")
+
+
+def handle_lane_change(key):
+    global player_pos
+    if key == b'n':
+        if player_pos[0] > -500:
+            player_pos[0] -= 500  # Move left
+    if key == b'v':
+        if player_pos[0] < 500:
+            player_pos[0] += 500  # Move right
+
+            
 # ---------- END: ROHIT'S PART ----------
