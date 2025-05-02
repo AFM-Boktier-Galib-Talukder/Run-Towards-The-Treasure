@@ -20,4 +20,23 @@ SpaceBar = Game start / Pause <br>
 D = Display my feature key combinations as necessary (If player is not running)
 
 -------------------------------------------------------------------------------------------               
+-------------------------------------------------------------------------------------------
+<b> ROHIT: </b>
 
+<b>Feature 01:</b><br>
+Score will be updated by hunting tresures
+Show game over text once the character collide
+
+<br><br>
+<b>Feature 02:</b><br>
+Tresure will be collected once the player collide with it
+
+<br><br>
+<b>Feature 03:</b><br>
+Cheat Mode Toggle which means player can play the game without any collision with obstackles.
+
+<br><br>
+<b>Feature 04:</b><br>
+Changing line - For example: R to shift right and L to shift left
+
+-------------------------------------------------------------------------------------------

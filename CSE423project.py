@@ -11,7 +11,7 @@ fovY = 80
 Player_running=False
 player_pos = [0, 0, 0]  
 player_rotation = 0    
-player_speed = 5 
+player_speed = 3.5
 #...........................................
 camera_pos = (0,550,450) 
 camera_angle = 0 
@@ -64,6 +64,7 @@ def update_rohit_features():
         ox, oy, _ = obs['position']
         if abs(px - ox) < 300 and abs(py - oy) < 300 and not cheat_mode:
             game_over = True
+            print(game_over)
             return
 
     new_treasures = []
@@ -97,8 +98,6 @@ def handle_rohit_keys(key):
 
 def draw_rohit_text():
     draw_text(800, 770, f"Score: {score}")
-    draw_text(700, 620, f"Press '<' key to shift left")
-    draw_text(700, 640, f"Press '>' key to shift right")
     if game_over:
         draw_text(800, 740, "GAME OVER")
     if cheat_mode:
@@ -564,7 +563,7 @@ def game_floor():
     grid_size = GRID_LENGTH
     
     for i in range(-2,2):
-        for j in range(-50, 4):
+        for j in range(-100, 4):
             if (i + j) % 2 == 0:
                 glColor3f(0.65,0.47,0.28)
             else:
@@ -644,7 +643,6 @@ def idle():
             tpp_camera_pos = (tpp_camera_pos[0] - dx, tpp_camera_pos[1] - dy, tpp_camera_pos[2])
     
         if game_over: 
-            # draw_text(800, 740, "GAME OVER")
             return
 
 
@@ -669,6 +667,9 @@ def showScreen():
     game_floor()
     draw_obstacles()
 
+    if game_over:
+        draw_text(800, 740, "GAME OVER")
+
 
     if D:
         draw_text(30, 720, f"X =  (Male / Female)")
@@ -676,6 +677,8 @@ def showScreen():
         draw_text(30, 660, f"For Female, I = Sari , O = Gown , P = Princess dress")
         draw_text(30, 630, f"J =  (TPP / FPP) ")
         draw_text(30, 600, f"H = upper view, N = lower view, M = Right Rotation, B = Left Rotation ")
+        draw_text(700, 620, f"Press '<' key to shift left")
+        draw_text(700, 640, f"Press '>' key to shift right")
 
     if (Player_running == False):
         draw_text(350, 740, f"Press Space Bar to Play The Game")
